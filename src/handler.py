@@ -36,7 +36,17 @@ temp_mp4 = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
         b="192k",
         shortest=None,
         **{'i': temp_mp3.name}
-    )
+   .output(
+    temp_mp4.name,
+    vf="scale=1280:720,fps=25",             # ✅ 프레임 추가
+    pix_fmt="yuv420p",
+    vcodec="libx264",
+    acodec="aac",
+    shortest=None,
+    audio_bitrate="192k",
+    **{'i': temp_mp3.name}
+)
+ )
     .overwrite_output()
     .run()
 )
