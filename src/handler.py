@@ -26,16 +26,17 @@ def handler(event):
         (
             ffmpeg
             .input(temp_img.name, loop=1, t=5)
-            .output(
-                temp_mp4.name,
-                vf="scale=1280:720",
-                pix_fmt="yuv420p",
-                vcodec="libx264",
-                acodec="aac",
-                shortest=None,
-                audio_bitrate="192k",
-                **{'i': temp_mp3.name}
-            )
+           .output(
+    temp_mp4.name,
+    vf="scale=1280:720,fps=25",
+    pix_fmt="yuv420p",
+    vcodec="libx264",
+    acodec="aac",
+    audio_bitrate="192k",
+    shortest=True,  # 오디오 길이 기준으로 끊기
+    **{'i': temp_mp3.name}
+)
+
             .overwrite_output()
             .run()
         )
