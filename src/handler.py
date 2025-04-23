@@ -1,4 +1,4 @@
-from runpod.serverless.modules.rp_logging import RunPodLogger
+
 import base64
 import tempfile
 import os
@@ -51,5 +51,6 @@ def handler(event):
         }
 
     except Exception as e:
-        RunPodLogger.error(str(e))
-        return {"error": str(e)}
+       print(f"Error occurred: {str(e)}")
+return {"error": str(e)}
+
