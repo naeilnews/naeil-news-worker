@@ -20,32 +20,24 @@ def handler(event):
         image = Image.new('RGB', (1280, 720), color=(30, 30, 30))
         image.save(temp_img.name)
 
-        # 3. 영상 생성 (이미지+음성)
-      # 영상 생성 (이미지 + 음성 → .mp4)
-temp_mp4 = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
+        # 3. 이미지 + 오디오 → 영상(mp4)
+        temp_mp4 = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
 
-(
-    ffmpeg
-    .input(temp_img.name, loop=-1, framerate=25)
-
-    .output(
-      
-    temp_mp4.name,
-    vf="scale=1280:720,fps=25",
-    pix_fmt="yuv420p",
-    vcodec="libx264",
-    acodec="aac",
-    shortest=None,
-    audio_bitrate="192k",
-    **{'i': temp_mp3.name}
-)
-
-)
- )
-    .overwrite_output()
-    .run()
-)
-
+        (
+            ffmpeg
+            .input(temp_img.name, loop=1, t=5)
+            .output(
+                temp_mp4.name,
+                vf="scale=1280:720",
+                pix_fmt="yuv420p",
+                vcodec="libx264",
+                acodec="aac",
+                shortest=None,
+                audio_bitrate="192k",
+                **{'i': temp_mp3.name}
+            )
+            .overwrite_output()
+            .run()
         )
 
         # 4. base64 인코딩
